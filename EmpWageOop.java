@@ -83,7 +83,18 @@ public class EmpWageOop implements IComputeEmpWage
 			empWage=empHrs*companyempwage.empRatePerHr;
 			totalEmpWage=totalEmpWage+empWage;
 			System.out.println("Employee wage:"+empWage);
+
+			Dictionary wage=new Hashtable();
+			String result="";
+			result=empWage+":"+totalEmpWage;
+			wage.put(totalWorkingDays,result);
+			for (Enumeration i=wage.elements();i.hasMoreElements();)
+			{
+				System.out.println("value in dictionary :"+i.nextElement());
+			}
+
 		}
+
 		System.out.println("Total employee wage :"+totalEmpWage);
 		return totalEmpHours*companyempwage.empRatePerHr;
 	}

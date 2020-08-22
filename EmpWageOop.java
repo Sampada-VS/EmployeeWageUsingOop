@@ -1,3 +1,4 @@
+import java.util.*;
 interface IComputeEmpWage
 {
 	public void addCompany(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursInMonth);
@@ -17,45 +18,54 @@ class CompanyEmpWage
 		this.empRatePerHr=empRatePerHr;
 		this.numOfWorkingDays=numOfWorkingDays;
 		this.maxHrs=maxHrs;
+		totalEmpWage=0;
 	}
 	public void setTotalEmpWage(int totalEmpWage)
 	{
 		this.totalEmpWage=totalEmpWage;
 	}
-
+	public String toString()
+	{
+		return "Total employee wage for company : "+company+" is : "+totalEmpWage;
+	}
 }
 public class EmpWageOop implements IComputeEmpWage
 {
 	public static final int IS_FULL_TIME=1;
 	public static final int IS_PART_TIME=2;
 
-	public CompanyEmpWage[] compEmpWageArr;
-	public int numOfCompany=0;
+	private int numOfCompany=0;
+	private LinkedList<CompanyEmpWage> compEmpWageList;
+
 	public EmpWageOop()
 	{
-		compEmpWageArr=new CompanyEmpWage[2];
+		compEmpWageList=new LinkedList<>();
 	}
 	public void addCompany(String company, int empRatePerHr, int numOfWorkingDays, int maxHrs)
 	{
-		compEmpWageArr[numOfCompany]=new CompanyEmpWage(company,empRatePerHr,numOfWorkingDays,maxHrs);
-		numOfCompany++;
+		CompanyEmpWage companyempwage= new CompanyEmpWage(company,empRatePerHr,numOfWorkingDays,maxHrs);
+		compEmpWageList.add(companyempwage);
 	}
 	public void computeEmpWage()
 	{
-		for(int i=0;i<numOfCompany;i++)
-			compEmpWageArr[i].setTotalEmpWage(this.computeEmpWage(compEmpWageArr[i]));
+		for(int i=0;i<compEmpWageList.size();i++) {
+			CompanyEmpWage companyempwage=compEmpWageList.get(i);
+			companyempwage.setTotalEmpWage(this.computeEmpWage(companyempwage));
+			System.out.println(companyempwage);
+		}
 	}
 	public int computeEmpWage(CompanyEmpWage companyempwage)
 	{
-		int empHrs;
-		int empWage;
-		int totalMaxEmpHrs=12;
 		int totalEmpHours=0;
 		int totalWorkingDays=0;
+		int totalEmpWage=0;
 		System.out.println("For company "+companyempwage.company);
-		while (totalEmpHours<companyempwage.maxHrs && totalWorkingDays<companyempwage.numOfWorkingDays)
+		while (totalEmpHours<=companyempwage.maxHrs && totalWorkingDays<companyempwage.numOfWorkingDays)
 		{
 			totalWorkingDays++;
+			int empHrs=0;
+			int empWage=0;
+
 			int empCheck = (int)((Math.random()*10)%3);
 			switch (empCheck)
 			{
@@ -70,12 +80,12 @@ public class EmpWageOop implements IComputeEmpWage
 			}
 
 			totalEmpHours=totalEmpHours+empHrs;
-			System.out.println("Employee Hrs:"+empHrs);
+			empWage=empHrs*companyempwage.empRatePerHr;
+			totalEmpWage=totalEmpWage+empWage;
+			System.out.println("Employee wage:"+empWage);
 		}
-		int totalEmpWage=totalEmpHours*companyempwage.empRatePerHr;
-		System.out.println("Total emp hours :"+totalEmpHours);
 		System.out.println("Total employee wage :"+totalEmpWage);
-		return totalEmpWage;
+		return totalEmpHours*companyempwage.empRatePerHr;
 	}
 	public static void main(String[] args)
 	{

@@ -3,6 +3,7 @@ interface IComputeEmpWage
 {
 	public void addCompany(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursInMonth);
 	public void computeEmpWage();
+	public int getTotalWage(String company);
 }
 class CompanyEmpWage
 {
@@ -36,15 +37,17 @@ public class EmpWageOop implements IComputeEmpWage
 
 	private int numOfCompany=0;
 	private LinkedList<CompanyEmpWage> compEmpWageList;
-
+	private Map<String,CompanyEmpWage> companyEmpWageMap;
 	public EmpWageOop()
 	{
 		compEmpWageList=new LinkedList<>();
+		companyEmpWageMap=new HashMap<>();
 	}
 	public void addCompany(String company, int empRatePerHr, int numOfWorkingDays, int maxHrs)
 	{
 		CompanyEmpWage companyempwage= new CompanyEmpWage(company,empRatePerHr,numOfWorkingDays,maxHrs);
 		compEmpWageList.add(companyempwage);
+		companyEmpWageMap.put(company,companyempwage);
 	}
 	public void computeEmpWage()
 	{
@@ -53,6 +56,10 @@ public class EmpWageOop implements IComputeEmpWage
 			companyempwage.setTotalEmpWage(this.computeEmpWage(companyempwage));
 			System.out.println(companyempwage);
 		}
+	}
+	public int getTotalWage(String company)
+	{
+		return companyEmpWageMap.get(company).totalEmpWage;
 	}
 	public int computeEmpWage(CompanyEmpWage companyempwage)
 	{
@@ -83,16 +90,6 @@ public class EmpWageOop implements IComputeEmpWage
 			empWage=empHrs*companyempwage.empRatePerHr;
 			totalEmpWage=totalEmpWage+empWage;
 			System.out.println("Employee wage:"+empWage);
-
-			Dictionary wage=new Hashtable();
-			String result="";
-			result=empWage+":"+totalEmpWage;
-			wage.put(totalWorkingDays,result);
-			for (Enumeration i=wage.elements();i.hasMoreElements();)
-			{
-				System.out.println("value in dictionary :"+i.nextElement());
-			}
-
 		}
 
 		System.out.println("Total employee wage :"+totalEmpWage);
@@ -104,6 +101,7 @@ public class EmpWageOop implements IComputeEmpWage
 		empwageoop.addCompany("Deloitte",20,2,5);
 		empwageoop.addCompany("Microsoft",30,5,30);
 		empwageoop.computeEmpWage();
+		System.out.println("Total wage for Microsoft company : "+empwageoop.getTotalWage("Microsoft"));
 	}
 
 }

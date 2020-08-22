@@ -1,3 +1,8 @@
+interface IComputeEmpWage
+{
+	public void addCompany(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursInMonth);
+	public void computeEmpWage();
+}
 class CompanyEmpWage
 {
 	public final String company;
@@ -19,7 +24,7 @@ class CompanyEmpWage
 	}
 
 }
-public class EmpWageOop
+public class EmpWageOop implements IComputeEmpWage
 {
 	public static final int IS_FULL_TIME=1;
 	public static final int IS_PART_TIME=2;

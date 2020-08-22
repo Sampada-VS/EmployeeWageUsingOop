@@ -45,13 +45,6 @@ public class EmpWageOop implements IComputeEmpWage
 		for(int i=0;i<numOfCompany;i++)
 			compEmpWageArr[i].setTotalEmpWage(this.computeEmpWage(compEmpWageArr[i]));
 	}
-	public static void main(String[] args)
-	{
-		EmpWageOop empWageArr=new EmpWageOop();
-		empWageArr.addCompany("Deloitte",20,2,5);
-		empWageArr.addCompany("Microsoft",30,5,30);
-		empWageArr.computeEmpWage();
-	}
 	public int computeEmpWage(CompanyEmpWage companyempwage)
 	{
 		int empHrs;
@@ -84,4 +77,12 @@ public class EmpWageOop implements IComputeEmpWage
 		System.out.println("Total employee wage :"+totalEmpWage);
 		return totalEmpWage;
 	}
+	public static void main(String[] args)
+	{
+		IComputeEmpWage empwageoop=new EmpWageOop();
+		empwageoop.addCompany("Deloitte",20,2,5);
+		empwageoop.addCompany("Microsoft",30,5,30);
+		empwageoop.computeEmpWage();
+	}
+
 }

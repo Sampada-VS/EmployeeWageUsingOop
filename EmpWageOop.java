@@ -1,38 +1,61 @@
-public class EmpWageOop
+class CompanyEmpWage
 {
-	public static final int IS_FULL_TIME=1;
-	public static final int IS_PART_TIME=2;
-
 	public final String company;
 	public final int empRatePerHr;
 	public final int numOfWorkingDays;
 	public final int maxHrs;
+	public int totalEmpWage;
 
-	public EmpWageOop(String company, int empRatePerHr, int numOfWorkingDays, int maxHrs)
+	public CompanyEmpWage(String company, int empRatePerHr, int numOfWorkingDays, int maxHrs)
 	{
 		this.company=company;
 		this.empRatePerHr=empRatePerHr;
 		this.numOfWorkingDays=numOfWorkingDays;
 		this.maxHrs=maxHrs;
 	}
+	public void setTotalEmpWage(int totalEmpWage)
+	{
+		this.totalEmpWage=totalEmpWage;
+	}
 
+}
+public class EmpWageOop
+{
+	public static final int IS_FULL_TIME=1;
+	public static final int IS_PART_TIME=2;
+
+	public CompanyEmpWage[] compEmpWageArr;
+	public int numOfCompany=0;
+	public EmpWageOop()
+	{
+		compEmpWageArr=new CompanyEmpWage[2];
+	}
+	public void addCompany(String company, int empRatePerHr, int numOfWorkingDays, int maxHrs)
+	{
+		compEmpWageArr[numOfCompany]=new CompanyEmpWage(company,empRatePerHr,numOfWorkingDays,maxHrs);
+		numOfCompany++;
+	}
+	public void computeEmpWage()
+	{
+		for(int i=0;i<numOfCompany;i++)
+			compEmpWageArr[i].setTotalEmpWage(this.computeEmpWage(compEmpWageArr[i]));
+	}
 	public static void main(String[] args)
 	{
-		EmpWageOop deloitte=new EmpWageOop("Deloitte",20,2,10);
-		EmpWageOop microsoft=new EmpWageOop("Microsoft",30,5,30);
-		deloitte.calculate20Wage();
-		microsoft.calculate20Wage();
-
+		EmpWageOop empWageArr=new EmpWageOop();
+		empWageArr.addCompany("Deloitte",20,2,5);
+		empWageArr.addCompany("Microsoft",30,5,30);
+		empWageArr.computeEmpWage();
 	}
-	public void calculate20Wage()
+	public int computeEmpWage(CompanyEmpWage companyempwage)
 	{
 		int empHrs;
 		int empWage;
 		int totalMaxEmpHrs=12;
 		int totalEmpHours=0;
 		int totalWorkingDays=0;
-		System.out.println("For company "+company);
-		while (totalEmpHours<maxHrs && totalWorkingDays<numOfWorkingDays)
+		System.out.println("For company "+companyempwage.company);
+		while (totalEmpHours<companyempwage.maxHrs && totalWorkingDays<companyempwage.numOfWorkingDays)
 		{
 			totalWorkingDays++;
 			int empCheck = (int)((Math.random()*10)%3);
@@ -49,21 +72,11 @@ public class EmpWageOop
 			}
 
 			totalEmpHours=totalEmpHours+empHrs;
-			if (totalEmpHours>maxHrs)
-			{
-				totalEmpHours=totalEmpHours-empHrs;
-				totalWorkingDays--;
-				break;
-			}
-			else
-			{
-				empWage=empHrs*empRatePerHr;
-				System.out.println("Employee daily wage :"+empWage+" Total Employee Hours : "+totalEmpHours);
-			}
+			System.out.println("Employee Hrs:"+empHrs);
 		}
-		int totalEmpWage=totalEmpHours*empRatePerHr;
-		System.out.println("Total employee wage :"+totalEmpWage);
+		int totalEmpWage=totalEmpHours*companyempwage.empRatePerHr;
 		System.out.println("Total emp hours :"+totalEmpHours);
-		System.out.println("Total working days :"+totalWorkingDays);
+		System.out.println("Total employee wage :"+totalEmpWage);
+		return totalEmpWage;
 	}
 }
